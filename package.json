@@ -1,0 +1,19 @@
+{
+  "name": "hashcode16",
+  "version": "1.0.0",
+  "description": "hash code qualif round",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baptistelemoine/hashcode16.git"
+  },
+  "author": "Tyiab & Baptiste",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baptistelemoine/hashcode16/issues"
+  },
+  "homepage": "https://github.com/baptistelemoine/hashcode16#readme"
+}
