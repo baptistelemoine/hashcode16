@@ -1,10 +1,6 @@
 //env config, product type, ptweight,
-var mapperConfig = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+var fs = require('fs');
 var breakPointsNames = ["area", "products", "wareHouses", "orders"];
-//When to loop for another values
-    //WhareHouses
-var mapperCutKey = [3];
-var mapperData=[];
 
 var area = ["rows", "columns", "drones", "turns", "maxPayload"];
 
@@ -63,10 +59,10 @@ var mapperFile = function(){
     lineReader.on('line', function (line) {
 
           if(countLine==breakPoint){
-              console.log("Count line "+countLine+" == "+breakPoint)
+              //console.log("Count line "+countLine+" == "+breakPoint)
               //Get break point name & obj
               breakPointName = breakPointsNames[breakPointNamePoint];
-              console.log("Break point name "+breakPointName)
+              //console.log("Break point name "+breakPointName)
               breakPointObj = mapper[breakPointName];
 
               //Get actual break point end
@@ -81,17 +77,19 @@ var mapperFile = function(){
 
           //End of section set next section auth
           if(countLine==(endPoint-1)){
-            console.log('EndPoint '+endPoint);
+            //console.log('EndPoint '+endPoint);
             //New section will come
             breakPoint = endPoint;
-            console.log('Break point '+breakPoint)
+           // console.log('Break point '+breakPoint)
           }
 
           //console.log(breakPointObj)
           //console.log('Line from file:', line);
 
       countLine++;
-    });
+    }).on('close', function() {
+        fs.writeFile("output.json", JSON.stringify(mapper))
+     });
 }
 
 var areaMapper = function(lines, count, currentLine){
@@ -137,7 +135,7 @@ var ordersMapper = function(lines, count, currentLine){
     count++;
     if(count==orderPackCount){
         mapper.orders.orders.push(orderItem)
-        console.log(orderItem);
+        //console.log(orderItem);
         orderItem={};
         count=0;
     }
@@ -146,5 +144,3 @@ var ordersMapper = function(lines, count, currentLine){
 }
 
 mapperFile();
-
-//console.log(mapper.area);
