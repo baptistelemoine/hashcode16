@@ -1,12 +1,15 @@
 var fs = require('fs');
 
 //env config, product type, ptweight,
-var mapperConfig = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+var fs = require('fs');
 var breakPointsNames = ["area", "products", "wareHouses", "orders"];
+<<<<<<< HEAD
 //When to loop for another values
 //WhareHouses
 var mapperCutKey = [3];
 var mapperData = [];
+=======
+>>>>>>> 4b078930ccb76693f3fa03501f84b0285ce45100
 
 var area = ["rows", "columns", "drones", "turns", "maxPayload"];
 
@@ -50,6 +53,7 @@ var mapper = {
     "orders": []
   }
 };
+<<<<<<< HEAD
 var mapperFile = function() {
 
   var lineReader = require('readline').createInterface({
@@ -77,6 +81,55 @@ var mapperFile = function() {
       breakPointNamePoint++;
       whatNext = 0;
     }
+=======
+var mapperFile = function(){
+
+    var lineReader = require('readline').createInterface({
+      input: require('fs').createReadStream('./instructions/busy_day.in')
+    });
+
+    var countLine=0;
+    var breakPoint=0;
+    var breakPointName="";
+    var breakPointNamePoint=0;
+    var endPoint=0;
+    var whatNext=0;
+    lineReader.on('line', function (line) {
+
+          if(countLine==breakPoint){
+              //console.log("Count line "+countLine+" == "+breakPoint)
+              //Get break point name & obj
+              breakPointName = breakPointsNames[breakPointNamePoint];
+              //console.log("Break point name "+breakPointName)
+              breakPointObj = mapper[breakPointName];
+
+              //Get actual break point end
+              endPoint = breakPointObj.endLine;
+              breakPointNamePoint++;
+              whatNext=0;
+          }
+
+          //Send line value to section manager
+          //console.log(breakPointName+"Mapper('"+line+"', "+whatNext+")");
+          whatNext = eval(breakPointName+"Mapper('"+line+"', "+whatNext+", "+countLine+")");
+
+          //End of section set next section auth
+          if(countLine==(endPoint-1)){
+            //console.log('EndPoint '+endPoint);
+            //New section will come
+            breakPoint = endPoint;
+           // console.log('Break point '+breakPoint)
+          }
+
+          //console.log(breakPointObj)
+          //console.log('Line from file:', line);
+
+      countLine++;
+    }).on('close', function() {
+        fs.writeFile("output.json", JSON.stringify(mapper))
+     });
+}
+>>>>>>> 4b078930ccb76693f3fa03501f84b0285ce45100
 
     //Send line value to section manager
     //console.log(breakPointName+"Mapper('"+line+"', "+whatNext+")");
@@ -134,6 +187,7 @@ var wareHousesMapper = function(lines, count, currentLine) {
   return count;
 }
 
+<<<<<<< HEAD
 var ordersMapper = function(lines, count, currentLine) {
 
   orderItem[order[count]] = lines;
@@ -146,8 +200,18 @@ var ordersMapper = function(lines, count, currentLine) {
   }
   //console.log(mapper.wareHouses);
   return count;
+=======
+    orderItem[order[count]]=lines;
+    count++;
+    if(count==orderPackCount){
+        mapper.orders.orders.push(orderItem)
+        //console.log(orderItem);
+        orderItem={};
+        count=0;
+    }
+    //console.log(mapper.wareHouses);
+    return count;
+>>>>>>> 4b078930ccb76693f3fa03501f84b0285ce45100
 }
 
 mapperFile();
-
-//console.log(mapper.area);
